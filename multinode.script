@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#SBATCH -A <XXXX>
+#SBATCH -C gpu
+#SBATCH -q debug
+#SBATCH -t 00:10:00
+#SBATCH -N 2
+#SBATCH --ntasks-per-node=4
+#SBATCH --gpus-per-task=1
+#SBATCH --gpu-bind=none
+#SBATCH --image=nvcr.io/nvidia/nightly/cuda-quantum:cu11-latest
+#SBATCH --module=cuda-mpich
+
+export CUDAQ_MPI_COMM_LIB=${HOME}/distributed_interfaces/libcudaq_distributed_interface_mpi.so
+
+srun -N 2 -n 8 shifter bash -l launch.sh ghz.py
